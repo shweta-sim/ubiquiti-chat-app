@@ -22,7 +22,7 @@ io.on('connection', socket => {
   socket.on('login', ({ name }, callback) => {
     const { error, user } = addUser({ id: socket.id, name });
 
-    if (error) return callback(getUsersInRoom(room));
+    if (error) return callback(error);
 
     socket.emit('message', {
       user: 'admin',

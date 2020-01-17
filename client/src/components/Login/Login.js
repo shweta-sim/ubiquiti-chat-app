@@ -1,32 +1,38 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import './Login.css';
 
 const Login = props => {
   const [name, setName] = useState('');
+  const [redirect, setRedirect] = useState(false);
+
+  let usernameBox;
+  let errors;
+
+  useEffect(() => {
+    if (props.location.state) {
+      errors = document.querySelector('.errors');
+      errors.textContent = props.location.state.error;
+    }
+  }, []);
+
+  const redirectToChat = () => {
+    const chatURL = `/chat?name=${name}`;
+    return <Redirect to={chatURL} />;
+  };
 
   const handleErrors = event => {
     event.preventDefault();
-    const usernameBox = document.querySelector('.input');
-    const errors = document.querySelector('.errors');
-    if (!usernameBox.value) {
-      errors.textContent = 'Username can not be empty';
-    } else if (props.location.state.error) {
-      console.log('hello');
-      errors.textContent = props.location.state.error;
-    }
-  };
-
-  const handleKeyPress = () => {
-    const usernameBox = document.querySelector('.input');
-    const errors = document.querySelector('.errors');
+    usernameBox = document.querySelector('.input');
+    errors = document.querySelector('.errors');
     if (!usernameBox.value) {
       errors.textContent = 'Username can not be empty';
     } else {
-      const { href } = window.location;
-      window.location.href = `${href}chat?name=${name}`;
+      setRedirect(true);
     }
   };
+  if (redirect) return redirectToChat();
 
   return (
     <div className='outerWrapper'>
@@ -38,21 +44,15 @@ const Login = props => {
             type='text'
             onChange={event => setName(event.target.value)}
             onKeyPress={event =>
-              event.key === 'Enter' ? handleKeyPress() : null
+              event.key === 'Enter' ? handleErrors(event) : null
             }
           />
         </div>
-        <div className='errors'>
-          {/* {props.location.state.error ? props.location.state.error : ''} */}
-        </div>
+        <div className='errors'></div>
 
-        <Link
-          onClick={event => (!name ? handleErrors(event) : null)}
-          to={`/chat?name=${name}`}>
-          <button className='button mt-20' type='submit'>
-            Sign In
-          </button>
-        </Link>
+        <button className='button mt-20' type='submit' onClick={handleErrors}>
+          Log In
+        </button>
       </div>
     </div>
   );

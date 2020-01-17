@@ -14,8 +14,8 @@ const Chat = ({ location }) => {
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
   const [redirect, setRedirect] = useState(false);
+  const errorTaken = 'Nickname already taken.';
 
   const ENDPOINT = 'localhost:5000';
 
@@ -25,7 +25,7 @@ const Chat = ({ location }) => {
       <Redirect
         to={{
           pathname: '/',
-          state: { error: 'Username is already taken', userList: allUsers }
+          state: { error: errorTaken }
         }}
       />
     );
@@ -41,16 +41,8 @@ const Chat = ({ location }) => {
 
     socket.emit('login', { name, room }, error => {
       console.log(error);
-      setAllUsers(error);
       if (error) {
-        function userExists(name) {
-          return error.some(function(el) {
-            return el.name === name;
-          });
-        }
-        if (userExists(name)) {
-          setRedirect(true);
-        }
+        setRedirect(true);
       }
     });
 
@@ -72,7 +64,6 @@ const Chat = ({ location }) => {
     });
   }, [messages]);
 
-  // function for sending messages
   const sendMessage = event => {
     event.preventDefault();
 
