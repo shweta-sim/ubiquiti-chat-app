@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  height: 60px;
+  width: 100%;
+  color: #fff;
+  font-size: 1em;
+}
+
+.leftWrapper {
+  flex: 0.5;
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.rightWrapper {
+  display: flex;
+  flex: 0.5;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.icon-online {
+  margin-right: 5%;
+}
