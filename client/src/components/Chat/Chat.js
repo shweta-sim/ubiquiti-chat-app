@@ -14,8 +14,7 @@ const Chat = ({ location }) => {
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [redirect, setRedirect] = useState(false);
-  const errorTaken = 'Nickname already taken.';
+  const [redirect, setRedirect] = useState('');
 
   const ENDPOINT = 'localhost:5000';
 
@@ -25,7 +24,7 @@ const Chat = ({ location }) => {
       <Redirect
         to={{
           pathname: '/',
-          state: { error: errorTaken }
+          state: { error: redirect }
         }}
       />
     );
@@ -41,9 +40,7 @@ const Chat = ({ location }) => {
 
     socket.emit('login', { name, room }, error => {
       console.log(error);
-      if (error) {
-        setRedirect(true);
-      }
+      if (error) setRedirect('Nickname is already taken');
     });
 
     // console.log(socket);
@@ -59,8 +56,8 @@ const Chat = ({ location }) => {
       setMessages([...messages, message]);
     });
 
-    socket.on('connect_timeout', timeout => {
-      console.log('timed out in', timeout);
+    socket.on('connect_error', error => {
+      if (error) setRedirect('Server is unavailable');
     });
   }, [messages]);
 
@@ -72,7 +69,8 @@ const Chat = ({ location }) => {
     }
   };
 
-  if (redirect) return redirectToLogin();
+  if (redirect !== '') return redirectToLogin();
+
   return (
     <div className='wrapper'>
       <div className='container animated fadeInDown'>

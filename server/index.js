@@ -93,11 +93,14 @@ io.on('connection', socket => {
 
 app.use(router);
 
+server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
+console.log(`This process is pid ${process.pid}`);
 const sigs = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
 sigs.forEach(sig => {
   process.on(sig, () => {
     // Stops the server from accepting new connections and finishes existing connections.
     server.close(err => {
+      console.log('trying to kill in signals - ', err);
       if (err) {
         console.error('process shutdown.......', err);
         process.exit(1);
@@ -105,5 +108,3 @@ sigs.forEach(sig => {
     });
   });
 });
-
-server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
