@@ -1,10 +1,10 @@
-### Available Scripts `npm start`
-
-Runs the server at [http://localhost:5000](http://localhost:5000).<br />
-
-# ubiquity-chat-app
+# Ubiquity Chat App
 
 Chat App in React JS using Node.js, Socket.io &amp; Express
+
+# Available Scripts `npm start`
+
+Runs the server at [http://localhost:5000](http://localhost:5000).<br />
 
 # Login Page:
 

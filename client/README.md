@@ -1,11 +1,11 @@
-### Available Scripts `npm start`
+# Ubiquity Chat App
+
+Chat App in React JS using Node.js, Socket.io &amp; Express
+
+# Available Scripts `npm start`
 
 Runs the client app in the browser development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-# ubiquity-chat-app
-
-Chat App in React JS using Node.js, Socket.io &amp; Express
 
 # Login Page:
 
