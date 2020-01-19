@@ -1,7 +1,6 @@
 ### Available Scripts `npm start`
 
-Runs the client app in the browser development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the server at [http://localhost:5000](http://localhost:5000).<br />
 
 # ubiquity-chat-app
 
