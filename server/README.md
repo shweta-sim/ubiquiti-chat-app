@@ -1,6 +1,6 @@
 # Ubiquiti Chat App
 
-Chat App in React JS using Node.js, Socket.io &amp; Express
+Chat App in React JS using Node.js, Socket.io &amp; Express including emojis.
 
 # Available Scripts `npm start`
 
