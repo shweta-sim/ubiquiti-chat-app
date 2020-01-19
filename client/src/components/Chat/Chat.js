@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import queryString from 'query-string';
 import io from 'socket.io-client';
-import './Chat.css';
 import Header from '../Header/Header';
 import Messages from '../Messages/Messages';
 import InputBox from '../InputBox/InputBox';
-import { Redirect } from 'react-router-dom';
+import './Chat.css';
 
 let socket;
 
@@ -15,11 +15,11 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [redirect, setRedirect] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const ENDPOINT = 'localhost:5000';
 
   const redirectToLogin = () => {
-    console.log('exists, redirecting from chat');
     return (
       <Redirect
         to={{
@@ -39,11 +39,8 @@ const Chat = ({ location }) => {
     setRoom(room);
 
     socket.emit('login', { name, room }, error => {
-      console.log(error);
-      if (error) setRedirect('Nickname is already taken');
+      error ? setRedirect('Nickname is already taken') : setLoggedIn(true);
     });
-
-    // console.log(socket);
 
     return () => {
       socket.emit('disconnect');
@@ -73,15 +70,17 @@ const Chat = ({ location }) => {
 
   return (
     <div className='wrapper'>
-      <div className='container animated fadeInDown'>
-        <Header user={name} />
-        <Messages messages={messages} name={name} />
-        <InputBox
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
-      </div>
+      {loggedIn ? (
+        <div className='container animated fadeInDown'>
+          <Header user={name} />
+          <Messages messages={messages} name={name} />
+          <InputBox
+            message={message}
+            setMessage={setMessage}
+            sendMessage={sendMessage}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

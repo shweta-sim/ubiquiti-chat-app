@@ -1,9 +1,9 @@
 import React from 'react';
-import './Header.css';
 import closeIcon from '../../icons/closeIcon.png';
 import onlineIcon from '../../icons/onlineIcon.png';
+import './Header.css';
 
-const Header = ({ user }) => {
+const Header = () => {
   return (
     <div className='header'>
       <div className='leftWrapper'>

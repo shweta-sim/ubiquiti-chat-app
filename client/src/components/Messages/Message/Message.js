@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './Message.css';
 
 import ReactEmoji from 'react-emoji';
@@ -9,7 +8,6 @@ const Message = ({ message: { user, text }, name }) => {
   let isSentByAdmin = false;
 
   const trimmedName = name.trim();
-  // .toLoweCase();
   if (user === trimmedName) {
     isSentByCurrentUser = true;
   }

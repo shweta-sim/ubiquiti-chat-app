@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import './Login.css';
 
 const Login = props => {
@@ -27,11 +26,12 @@ const Login = props => {
     usernameBox = document.querySelector('.input');
     errors = document.querySelector('.errors');
     if (!usernameBox.value) {
-      errors.textContent = 'Username can not be empty';
+      errors.textContent = 'Nickname can not be empty';
     } else {
       setRedirect(true);
     }
   };
+
   if (redirect) return redirectToChat();
 
   return (
@@ -48,6 +48,7 @@ const Login = props => {
             }
           />
         </div>
+
         <div className='errors'></div>
 
         <button className='button mt-20' type='submit' onClick={handleErrors}>

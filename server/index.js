@@ -2,12 +2,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
 
-const {
-  addUser,
-  removeUser,
-  getUser,
-  getUsersInRoom
-} = require('./helpers.js');
+const { addUser, removeUser, getUser, getAllUsers } = require('./helpers.js');
 
 const PORT = process.env.PORT || 5000;
 
@@ -38,7 +33,7 @@ io.on('connection', socket => {
 
     io.to(room).emit('roomData', {
       room: room,
-      users: getUsersInRoom(room)
+      users: getAllUsers(room)
     });
 
     callback();
@@ -49,7 +44,7 @@ io.on('connection', socket => {
     io.to(room).emit('message', { user: user.name, text: message });
     io.to(room).emit('roomData', {
       room: room,
-      users: getUsersInRoom(room)
+      users: getAllUsers(room)
     });
 
     callback();
@@ -61,7 +56,7 @@ io.on('connection', socket => {
       user: 'admin',
       text: `${user.name} was disconnected due to inactivity.`
     });
-    console.log('disconnected due to inactivity');
+    console.log('Timed out. User is disconnected due to inactivity.');
   });
 
   socket.on('disconnect', reason => {
@@ -73,20 +68,23 @@ io.on('connection', socket => {
           user: 'admin',
           text: `${user.name} left the chat, connection lost.`
         });
-        console.log(reason, 'user left the chat, connection lost.');
+        console.log(
+          'User has left the chat, connection lost. Reason: ',
+          reason
+        );
       } else if (reason === 'ping timeout') {
         socket.broadcast.to(room).emit('message', {
           user: 'admin',
           text: `${user.name} was disconnected due to inactivity.`
         });
-        console.log(reason, 'user disconnected due to inactivity.');
+        console.log('User is disconnected due to inactivity. Reason: ', reason);
       } else {
         socket.broadcast.to(room).emit('message', {
           user: 'admin',
           text: `${user.name} left the chat, connection lost.`
         });
       }
-      console.log(reason, 'user left the chat, connection lost.');
+      console.log('User has left the chat, connection lost. Reason: ', reason);
     }
   });
 });
@@ -94,15 +92,17 @@ io.on('connection', socket => {
 app.use(router);
 
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
-console.log(`This process is pid ${process.pid}`);
+
+console.log(`This process is PID: ${process.pid}`);
+
 const sigs = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
 sigs.forEach(sig => {
   process.on(sig, () => {
     // Stops the server from accepting new connections and finishes existing connections.
     server.close(err => {
-      console.log('trying to kill in signals - ', err);
+      console.log('Trying to kill in signals - ', err);
       if (err) {
-        console.error('process shutdown.......', err);
+        console.error('Process shutdown... ', err);
         process.exit(1);
       }
     });

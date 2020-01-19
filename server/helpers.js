@@ -1,28 +1,19 @@
 const users = [];
 
 const addUser = ({ id, name }) => {
-  name = name
-    // .toString()
-    .trim();
-  // .toLoweCase();
+  name = name.trim();
   room = 'defaultRoom';
-  // .toString()
-  // .trim();
-  // .toLoweCase();
 
-  // console.log(users);
   const existingUser = users.find(
     user => user.name === name && user.room === room
   );
 
   if (existingUser) {
-    return { error: 'username is taken' };
+    return { error: 'Nickname is already taken' };
   }
 
   const user = { id, name, room };
   users.push(user);
-  console.log('*** user connected ***', user.room);
-  console.log(users);
   return { user, users };
 };
 
@@ -35,6 +26,6 @@ const removeUser = id => {
 
 const getUser = id => users.find(user => user.id === id);
 
-const getUsersInRoom = room => users.filter(user => user.room === room);
+const getAllUsers = room => users.filter(user => user.room === room);
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+module.exports = { addUser, removeUser, getUser, getAllUsers };
